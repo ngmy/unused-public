@@ -1,5 +1,5 @@
 {
-    "name": "tomasvotruba/unused-public",
+    "name": "ngmy/unused-public",
     "type": "phpstan-extension",
     "description": "Detect unused public properties, constants and methods in your code",
     "license": "MIT",
