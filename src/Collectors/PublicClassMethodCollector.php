@@ -26,6 +26,7 @@ final class PublicClassMethodCollector implements Collector
     private const SKIPPED_TYPES = [
         // symfony
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+        'JMS\Serializer\Handler\SubscribingHandlerInterface',
         'Twig\Extension\ExtensionInterface',
         'Symfony\Bundle\FrameworkBundle\Controller\Controller',
         // laravel
@@ -78,10 +79,8 @@ final class PublicClassMethodCollector implements Collector
             return null;
         }
 
-        foreach (self::SKIPPED_TYPES as $skippedType) {
-            if ($classReflection->isSubclassOf($skippedType)) {
-                return null;
-            }
+        if ($this->isSkippedType($classReflection)) {
+            return null;
         }
 
         if ($this->publicClassMethodMatcher->shouldSkipClassReflection($classReflection)) {
@@ -112,5 +111,16 @@ final class PublicClassMethodCollector implements Collector
         }
 
         return $this->methodTypeDetector->isTraitMethod($classMethod, $scope);
+    }
+
+    private function isSkippedType(ClassReflection $classReflection): bool
+    {
+        foreach (self::SKIPPED_TYPES as $skippedType) {
+            if ($classReflection->isSubclassOf($skippedType)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
