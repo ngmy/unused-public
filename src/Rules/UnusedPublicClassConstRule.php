@@ -22,7 +22,7 @@ use TomasVotruba\UnusedPublic\ValueObject\ConstantReference;
 /**
  * @see \TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicClassConstRule\UnusedPublicClassConstRuleTest
  */
-final class UnusedPublicClassConstRule implements Rule
+final readonly class UnusedPublicClassConstRule implements Rule
 {
     /**
      * @var string
@@ -32,8 +32,8 @@ final class UnusedPublicClassConstRule implements Rule
     public const ERROR_MESSAGE = 'Public constant "%s::%s" is never used';
 
     public function __construct(
-        private readonly Configuration $configuration,
-        private readonly TemplateRegexFinder $templateRegexFinder,
+        private Configuration $configuration,
+        private TemplateRegexFinder $templateRegexFinder,
     ) {
     }
 

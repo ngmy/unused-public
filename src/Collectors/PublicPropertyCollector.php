@@ -18,7 +18,7 @@ use TomasVotruba\UnusedPublic\InternalDocStmtAnalyzer;
 /**
  * @implements Collector<InClassNode, array<array{class-string, string, int}>>
  */
-final class PublicPropertyCollector implements Collector
+final readonly class PublicPropertyCollector implements Collector
 {
     /**
      * @var array<class-string<Component>>
@@ -26,9 +26,9 @@ final class PublicPropertyCollector implements Collector
     private const CLASSES_TO_SKIP = ['Livewire\Component'];
 
     public function __construct(
-        private readonly ApiDocStmtAnalyzer $apiDocStmtAnalyzer,
-        private readonly InternalDocStmtAnalyzer $internalDocStmtAnalyzer,
-        private readonly Configuration $configuration
+        private ApiDocStmtAnalyzer $apiDocStmtAnalyzer,
+        private InternalDocStmtAnalyzer $internalDocStmtAnalyzer,
+        private Configuration $configuration
     ) {
     }
 

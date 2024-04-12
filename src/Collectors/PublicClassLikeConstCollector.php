@@ -16,12 +16,12 @@ use TomasVotruba\UnusedPublic\InternalDocStmtAnalyzer;
 /**
  * @implements Collector<ClassConst, array<array{class-string, string, int}>>
  */
-final class PublicClassLikeConstCollector implements Collector
+final readonly class PublicClassLikeConstCollector implements Collector
 {
     public function __construct(
-        private readonly ApiDocStmtAnalyzer $apiDocStmtAnalyzer,
-        private readonly InternalDocStmtAnalyzer $internalDocStmtAnalyzer,
-        private readonly Configuration $configuration,
+        private ApiDocStmtAnalyzer $apiDocStmtAnalyzer,
+        private InternalDocStmtAnalyzer $internalDocStmtAnalyzer,
+        private Configuration $configuration,
     ) {
     }
 

@@ -18,11 +18,11 @@ use TomasVotruba\UnusedPublic\ValueObject\MethodCallReference;
 /**
  * @implements Collector<StaticCall, array<string>|null>
  */
-final class StaticMethodCallCollector implements Collector
+final readonly class StaticMethodCallCollector implements Collector
 {
     public function __construct(
-        private readonly Configuration $configuration,
-        private readonly ClassTypeDetector $classTypeDetector,
+        private Configuration $configuration,
+        private ClassTypeDetector $classTypeDetector,
     ) {
     }
 

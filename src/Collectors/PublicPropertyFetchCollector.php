@@ -20,12 +20,12 @@ use TomasVotruba\UnusedPublic\ValueObject\PropertyReference;
 /**
  * @implements Collector<PropertyFetch, string[]>
  */
-final class PublicPropertyFetchCollector implements Collector
+final readonly class PublicPropertyFetchCollector implements Collector
 {
     public function __construct(
-        private readonly ParentPropertyReferenceResolver $parentPropertyReferenceResolver,
-        private readonly Configuration $configuration,
-        private readonly ClassTypeDetector $classTypeDetector,
+        private ParentPropertyReferenceResolver $parentPropertyReferenceResolver,
+        private Configuration $configuration,
+        private ClassTypeDetector $classTypeDetector,
     ) {
     }
 

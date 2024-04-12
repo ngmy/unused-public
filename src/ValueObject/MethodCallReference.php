@@ -7,13 +7,13 @@ namespace TomasVotruba\UnusedPublic\ValueObject;
 use Stringable;
 use TomasVotruba\UnusedPublic\Enum\ReferenceMarker;
 
-final class MethodCallReference implements Stringable
+final readonly class MethodCallReference implements Stringable
 {
     public function __construct(
-        private readonly string $class,
-        private readonly string $method,
-        private readonly bool $isLocal,
-        private readonly bool $isTest,
+        private string $class,
+        private string $method,
+        private bool $isLocal,
+        private bool $isTest,
     ) {
     }
 

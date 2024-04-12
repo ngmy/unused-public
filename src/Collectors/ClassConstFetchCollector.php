@@ -19,12 +19,12 @@ use TomasVotruba\UnusedPublic\ValueObject\ConstantReference;
 /**
  * @implements Collector<ClassConstFetch, string[]>
  */
-final class ClassConstFetchCollector implements Collector
+final readonly class ClassConstFetchCollector implements Collector
 {
     public function __construct(
-        private readonly ParentConstantReferenceResolver $parentConstantReferenceResolver,
-        private readonly Configuration $configuration,
-        private readonly ClassTypeDetector $classTypeDetector,
+        private ParentConstantReferenceResolver $parentConstantReferenceResolver,
+        private Configuration $configuration,
+        private ClassTypeDetector $classTypeDetector,
     ) {
     }
 
