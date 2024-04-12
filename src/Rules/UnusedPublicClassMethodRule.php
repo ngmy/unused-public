@@ -4,26 +4,20 @@ declare(strict_types=1);
 
 namespace TomasVotruba\UnusedPublic\Rules;
 
+use Nette\Utils\Arrays;
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\CollectedDataNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
-use TomasVotruba\UnusedPublic\CollectorMapper\MethodCallCollectorMapper;
-use TomasVotruba\UnusedPublic\Collectors\Callable_\AttributeCallableCollector;
-use TomasVotruba\UnusedPublic\Collectors\Callable_\CallUserFuncCollector;
 use TomasVotruba\UnusedPublic\Collectors\FormTypeClassCollector;
-use TomasVotruba\UnusedPublic\Collectors\MethodCall\MethodCallableCollector;
-use TomasVotruba\UnusedPublic\Collectors\MethodCall\MethodCallCollector;
 use TomasVotruba\UnusedPublic\Collectors\PublicClassMethodCollector;
-use TomasVotruba\UnusedPublic\Collectors\StaticCall\StaticMethodCallableCollector;
-use TomasVotruba\UnusedPublic\Collectors\StaticCall\StaticMethodCallCollector;
 use TomasVotruba\UnusedPublic\Configuration;
 use TomasVotruba\UnusedPublic\Enum\RuleTips;
+use TomasVotruba\UnusedPublic\NodeCollectorExtractor;
 use TomasVotruba\UnusedPublic\Templates\TemplateMethodCallsProvider;
 use TomasVotruba\UnusedPublic\Templates\UsedMethodAnalyzer;
-use TomasVotruba\UnusedPublic\Utils\Arrays;
 use TomasVotruba\UnusedPublic\ValueObject\MethodCallReference;
 
 /**
@@ -42,7 +36,7 @@ final readonly class UnusedPublicClassMethodRule implements Rule
         private Configuration $configuration,
         private TemplateMethodCallsProvider $templateMethodCallsProvider,
         private UsedMethodAnalyzer $usedMethodAnalyzer,
-        private MethodCallCollectorMapper $methodCallCollectorMapper,
+        private NodeCollectorExtractor $nodeCollectorExtractor,
     ) {
     }
 
@@ -64,21 +58,12 @@ final readonly class UnusedPublicClassMethodRule implements Rule
         $twigMethodNames = $this->templateMethodCallsProvider->provideTwigMethodCalls();
         $bladeMethodNames = $this->templateMethodCallsProvider->provideBladeMethodCalls();
 
-        $completeMethodCallReferences = $this->methodCallCollectorMapper->mapToMethodCallReferences([
-            $node->get(MethodCallCollector::class),
-            $node->get(MethodCallableCollector::class),
-            $node->get(StaticMethodCallCollector::class),
-            $node->get(StaticMethodCallableCollector::class),
-            $node->get(AttributeCallableCollector::class),
-            $node->get(CallUserFuncCollector::class),
-        ]);
-
+        $completeMethodCallReferences = $this->nodeCollectorExtractor->extractMethodCallReferences($node);
         $formTypeClasses = Arrays::flatten($node->get(FormTypeClassCollector::class));
-
-        $publicClassMethodCollector = $node->get(PublicClassMethodCollector::class);
 
         $ruleErrors = [];
 
+        $publicClassMethodCollector = $node->get(PublicClassMethodCollector::class);
         foreach ($publicClassMethodCollector as $filePath => $declarations) {
             foreach ($declarations as [$className, $methodName, $line, $isInternal]) {
                 if (in_array($className, $formTypeClasses, true)) {
