@@ -88,6 +88,7 @@ final readonly class UnusedPublicClassMethodRule implements Rule
                     ->file($filePath)
                     ->line($line)
                     ->tip(RuleTips::SOLUTION_MESSAGE)
+                    ->identifier('public.method.unused')
                     ->build();
             }
         }

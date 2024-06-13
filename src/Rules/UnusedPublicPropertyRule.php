@@ -78,6 +78,7 @@ final readonly class UnusedPublicPropertyRule implements Rule
                         ->file($filePath)
                         ->line($line)
                         ->tip(RuleTips::SOLUTION_MESSAGE)
+                        ->identifier('public.property.unused')
                         ->build();
                 }
             }
