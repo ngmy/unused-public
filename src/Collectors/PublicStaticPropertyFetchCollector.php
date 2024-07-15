@@ -10,6 +10,8 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
+use PHPStan\Reflection\ClassReflection;
+use TomasVotruba\UnusedPublic\ClassTypeDetector;
 use TomasVotruba\UnusedPublic\Configuration;
 use TomasVotruba\UnusedPublic\PropertyReference\ParentPropertyReferenceResolver;
 
@@ -21,6 +23,7 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
     public function __construct(
         private ParentPropertyReferenceResolver $parentPropertyReferenceResolver,
         private Configuration $configuration,
+        private ClassTypeDetector $classTypeDetector,
     ) {
     }
 
@@ -35,33 +38,43 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
-        if (! $this->configuration->isUnusedPropertyEnabled()) {
+        if (!$this->configuration->isUnusedPropertyEnabled()) {
             return null;
         }
 
-        if (! $node->class instanceof Name) {
+        if (!$node->name instanceof Identifier) {
             return null;
         }
 
-        if (! $node->name instanceof Identifier) {
-            return null;
-        }
-
-        if ($node->class->toString() === 'self') {
+        if (
+            $node->class instanceof Name
+            && ($node->class->toString() === 'self' || $node->class->toString() === 'static')
+        ) {
             // self fetch is allowed
             return null;
         }
 
-        $className = $node->class->toString();
-        $propertyName = $node->name->toString();
+        $classReflection = $scope->getClassReflection();
+        if ($classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass($classReflection)) {
+            return null;
+        }
 
-        $propertyReferences = [$className . '::' . $propertyName];
-        $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
-            $className,
-            $propertyName
-        );
-        $propertyReferences = [...$propertyReferences, ...$parentPropertyReferences];
+        if ($node->class instanceof Name) {
+            $classType = $scope->resolveTypeByName($node->class);
+        } else {
+            $classType = $scope->getType($node->class);
+        }
+        $result = [];
+        foreach($classType->getObjectClassNames() as $className) {
+            $propertyName = $node->name->toString();
+            $propertyReferences = [$className . '::' . $propertyName];
+            $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
+                $className,
+                $propertyName
+            );
+            $result = [...$result, ...$propertyReferences, ...$parentPropertyReferences];
+        }
 
-        return $propertyReferences;
+        return $result;
     }
 }
