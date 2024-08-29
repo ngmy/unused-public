@@ -18,10 +18,10 @@ use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\Ignor
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\LocallyUsedStaticProperty;
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\LocallyUsedStaticPropertyViaStatic;
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\LocalyUsedPublicProperty;
+use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\StaticUsedInTestCaseOnly;
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\UnusedInternalClassPublicProperty;
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\UnusedPublicInternalProperty;
 use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\UsedInTestCaseOnly;
-use TomasVotruba\UnusedPublic\Tests\Rules\UnusedPublicPropertyRule\Fixture\StaticUsedInTestCaseOnly;
 
 final class UnusedPublicPropertyRuleTest extends RuleTestCase
 {
@@ -194,9 +194,18 @@ final class UnusedPublicPropertyRuleTest extends RuleTestCase
             [],
         ];
 
-        yield [[__DIR__ . '/Fixture/UsedInUnionA.php', __DIR__ . '/Fixture/UsedInUnionB.php', __DIR__ . '/Source/UsedInUnion.php'], []];
-        yield [[__DIR__ . '/Fixture/UsedInUnionA.php', __DIR__ . '/Fixture/UsedInUnionB.php', __DIR__ . '/Source/UsedInUnionPhpdoc.php'], []];
-        yield [[__DIR__ . '/Fixture/StaticUsedInUnionA.php', __DIR__ . '/Fixture/StaticUsedInUnionB.php', __DIR__ . '/Source/StaticUsedInUnion.php'], []];
+        yield [[
+            __DIR__ . '/Fixture/UsedInUnionA.php', __DIR__ . '/Fixture/UsedInUnionB.php', __DIR__ . '/Source/UsedInUnion.php'],
+            [],
+        ];
+        yield [[
+            __DIR__ . '/Fixture/UsedInUnionA.php', __DIR__ . '/Fixture/UsedInUnionB.php', __DIR__ . '/Source/UsedInUnionPhpdoc.php'],
+            [],
+        ];
+        yield [[
+            __DIR__ . '/Fixture/StaticUsedInUnionA.php', __DIR__ . '/Fixture/StaticUsedInUnionB.php', __DIR__ . '/Source/StaticUsedInUnion.php'],
+            [],
+        ];
     }
 
     /**

@@ -38,11 +38,11 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
-        if (!$this->configuration->isUnusedPropertyEnabled()) {
+        if (! $this->configuration->isUnusedPropertyEnabled()) {
             return null;
         }
 
-        if (!$node->name instanceof Identifier) {
+        if (! $node->name instanceof Identifier) {
             return null;
         }
 
@@ -59,18 +59,16 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
             return null;
         }
 
-        if ($node->class instanceof Name) {
-            $classType = $scope->resolveTypeByName($node->class);
-        } else {
-            $classType = $scope->getType($node->class);
-        }
+        $classType = $node->class instanceof Name ? $scope->resolveTypeByName($node->class) : $scope->getType($node->class);
+
         $result = [];
-        foreach($classType->getObjectClassReflections() as $classReflection) {
+        foreach ($classType->getObjectClassReflections() as $classReflection) {
             $propertyName = $node->name->toString();
 
-            if (!$classReflection->hasProperty($propertyName)) {
+            if (! $classReflection->hasProperty($propertyName)) {
                 continue;
             }
+
             $propertyReflection = $classReflection->getProperty($propertyName, $scope);
             $className = $propertyReflection->getDeclaringClass()->getName();
             $propertyReferences = [$className . '::' . $propertyName];
