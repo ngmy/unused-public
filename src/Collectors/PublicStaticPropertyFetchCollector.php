@@ -16,7 +16,7 @@ use TomasVotruba\UnusedPublic\Configuration;
 use TomasVotruba\UnusedPublic\PropertyReference\ParentPropertyReferenceResolver;
 
 /**
- * @implements Collector<StaticPropertyFetch, string[]>
+ * @implements Collector<StaticPropertyFetch, non-empty-array<string>|null>
  */
 final readonly class PublicStaticPropertyFetchCollector implements Collector
 {
@@ -34,7 +34,7 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
 
     /**
      * @param StaticPropertyFetch $node
-     * @return string[]|null
+     * @return non-empty-array<string>|null
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
@@ -79,6 +79,10 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
                 $propertyName
             );
             $result = [...$result, ...$propertyReferences, ...$parentPropertyReferences];
+        }
+
+        if ($result === []) {
+            return null;
         }
 
         return $result;

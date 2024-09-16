@@ -16,7 +16,7 @@ use TomasVotruba\UnusedPublic\Configuration;
 use TomasVotruba\UnusedPublic\ValueObject\MethodCallReference;
 
 /**
- * @implements Collector<StaticMethodCallableNode, array<string>|null>
+ * @implements Collector<StaticMethodCallableNode, non-empty-array<string>|null>
  */
 final readonly class StaticMethodCallableCollector implements Collector
 {
@@ -33,7 +33,7 @@ final readonly class StaticMethodCallableCollector implements Collector
 
     /**
      * @param StaticMethodCallableNode $node
-     * @return string[]|null
+     * @return non-empty-array<string>|null
      */
     public function processNode(Node $node, Scope $scope): ?array
     {

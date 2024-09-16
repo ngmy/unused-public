@@ -17,7 +17,7 @@ use TomasVotruba\UnusedPublic\PropertyReference\ParentPropertyReferenceResolver;
 use TomasVotruba\UnusedPublic\ValueObject\PropertyReference;
 
 /**
- * @implements Collector<PropertyFetch, string[]>
+ * @implements Collector<PropertyFetch, non-empty-array<string>|null>
  */
 final readonly class PublicPropertyFetchCollector implements Collector
 {
@@ -38,7 +38,7 @@ final readonly class PublicPropertyFetchCollector implements Collector
 
     /**
      * @param PropertyFetch $node
-     * @return string[]|null
+     * @return non-empty-array<string>|null
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
@@ -77,6 +77,10 @@ final readonly class PublicPropertyFetchCollector implements Collector
                 $propertyName
             );
             $result = [...$result, (string) $propertyReference, ...$parentPropertyReferences];
+        }
+
+        if ($result === []) {
+            return null;
         }
 
         return $result;

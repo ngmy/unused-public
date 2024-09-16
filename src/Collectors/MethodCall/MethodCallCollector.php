@@ -15,7 +15,7 @@ use TomasVotruba\UnusedPublic\ClassMethodCallReferenceResolver;
 use TomasVotruba\UnusedPublic\Configuration;
 
 /**
- * @implements Collector<MethodCall, array<string>|null>
+ * @implements Collector<MethodCall, non-empty-array<string>|null>
  */
 final readonly class MethodCallCollector implements Collector
 {

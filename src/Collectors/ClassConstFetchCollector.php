@@ -17,7 +17,7 @@ use TomasVotruba\UnusedPublic\ConstantReference\ParentConstantReferenceResolver;
 use TomasVotruba\UnusedPublic\ValueObject\ConstantReference;
 
 /**
- * @implements Collector<ClassConstFetch, string[]>
+ * @implements Collector<ClassConstFetch, non-empty-array<string>|null>
  */
 final readonly class ClassConstFetchCollector implements Collector
 {
@@ -35,12 +35,12 @@ final readonly class ClassConstFetchCollector implements Collector
 
     /**
      * @param ClassConstFetch $node
-     * @return string[]|null
+     * @return non-empty-array<string>|null
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
         if (! $this->configuration->isUnusedConstantsEnabled()) {
-            return [];
+            return null;
         }
 
         if (! $node->class instanceof Name) {
