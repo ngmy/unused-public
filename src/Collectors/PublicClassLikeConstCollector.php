@@ -65,7 +65,7 @@ final readonly class PublicClassLikeConstCollector implements Collector
             ];
         }
 
-        if ([] === $constantNames) {
+        if ($constantNames === []) {
             return null;
         }
 

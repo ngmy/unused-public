@@ -6,7 +6,6 @@ namespace TomasVotruba\UnusedPublic\Collectors\Callable_;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Collectors\Collector;
 use PHPStan\Type\Constant\ConstantArrayType;
@@ -62,5 +61,4 @@ final readonly class CallableTypeCollector implements Collector
 
         return $classMethodReferences;
     }
-
 }
