@@ -15,7 +15,7 @@ use TomasVotruba\UnusedPublic\Configuration;
 use TomasVotruba\UnusedPublic\NodeCollectorExtractor;
 use TomasVotruba\UnusedPublic\Templates\TemplateMethodCallsProvider;
 use TomasVotruba\UnusedPublic\Templates\UsedMethodAnalyzer;
-use TomasVotruba\UnusedPublic\Utils\Strings;
+use TomasVotruba\UnusedPublic\ValueObject\MethodCallReference;
 
 /**
  * @see \TomasVotruba\UnusedPublic\Tests\Rules\RelativeUnusedPublicClassMethodRule\RelativeUnusedPublicClassMethodRuleTest
@@ -57,8 +57,6 @@ final readonly class RelativeUnusedPublicClassMethodRule implements Rule
 
         $completeMethodCallReferences = $this->nodeCollectorExtractor->extractMethodCallReferences($node);
 
-        // php method calls are case-insensitive
-        $lowerCompleteMethodCallReferences = Strings::lowercase($completeMethodCallReferences);
         $publicMethodCount = 0;
         $unusedPublicMethodCount = 0;
 
@@ -66,15 +64,16 @@ final readonly class RelativeUnusedPublicClassMethodRule implements Rule
 
         $publicClassMethodCollector = $node->get(PublicClassMethodCollector::class);
         foreach ($publicClassMethodCollector as $filePath => $declarations) {
-            foreach ($declarations as [$className, $methodName, $line]) {
+            foreach ($declarations as [$className, $methodName, $line, $isInternal]) {
                 ++$publicMethodCount;
 
                 if ($this->isUsedClassMethod(
                     $className,
                     $methodName,
-                    $lowerCompleteMethodCallReferences,
+                    $completeMethodCallReferences,
                     $twigMethodNames,
                     $bladeMethodNames,
+                    $isInternal,
                 )) {
                     continue;
                 }
@@ -101,16 +100,17 @@ final readonly class RelativeUnusedPublicClassMethodRule implements Rule
     }
 
     /**
-     * @param string[] $lowerCompleteMethodCallReferences
+     * @param MethodCallReference[] $completeMethodCallReferences
      * @param string[] $twigMethodNames
      * @param string[] $bladeMethodNames
      */
     private function isUsedClassMethod(
         string $className,
         string $methodName,
-        array $lowerCompleteMethodCallReferences,
+        array $completeMethodCallReferences,
         array $twigMethodNames,
-        array $bladeMethodNames
+        array $bladeMethodNames,
+        bool $isInternal,
     ): bool {
         if ($this->usedMethodAnalyzer->isUsedInTwig($methodName, $twigMethodNames)) {
             return true;
@@ -121,7 +121,20 @@ final readonly class RelativeUnusedPublicClassMethodRule implements Rule
         }
 
         $methodReference = $className . '::' . $methodName;
-        return in_array(strtolower($methodReference), $lowerCompleteMethodCallReferences, true);
+        foreach ($completeMethodCallReferences as $completeMethodCallReference) {
+            // skip calls in tests, if they are not internal
+            if (! $isInternal && $completeMethodCallReference->isTest()) {
+                continue;
+            }
+
+            $methodCallReference = $completeMethodCallReference->getClass() . '::' . $completeMethodCallReference->getMethod();
+            // php method calls are case-insensitive
+            if (strtolower($methodCallReference) === strtolower($methodReference)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
