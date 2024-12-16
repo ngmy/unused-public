@@ -56,7 +56,10 @@ final class PublicStaticPropertyFetchCollector implements Collector
         $propertyName = $node->name->toString();
 
         $propertyReferences = [$className . '::' . $propertyName];
-        $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences($className, $propertyName);
+        $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
+            $className,
+            $propertyName
+        );
         $propertyReferences = [...$propertyReferences, ...$parentPropertyReferences];
 
         return $propertyReferences;

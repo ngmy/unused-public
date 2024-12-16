@@ -44,11 +44,18 @@ final class ClassMethodCallReferenceResolver
         }
 
         $classReflection = $scope->getClassReflection();
-        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass($classReflection);
+        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass(
+            $classReflection
+        );
 
         $methodCallReferences = [];
         foreach ($callerType->getReferencedClasses() as $className) {
-            $methodCallReferences[] = new MethodCallReference($className, $methodCall->name->toString(), $isLocal, $isTest);
+            $methodCallReferences[] = new MethodCallReference(
+                $className,
+                $methodCall->name->toString(),
+                $isLocal,
+                $isTest
+            );
         }
 
         return $methodCallReferences;

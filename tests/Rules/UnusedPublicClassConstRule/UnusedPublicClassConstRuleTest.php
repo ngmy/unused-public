@@ -102,12 +102,8 @@ final class UnusedPublicClassConstRuleTest extends RuleTestCase
             'UNUSED',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedPublicInternalConstant.php',
-            ],
-            [
-                [$errorMessage, 12, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedPublicInternalConstant.php'],
+            [[$errorMessage, 12, RuleTips::SOLUTION_MESSAGE]],
         ];
 
         yield [
@@ -124,12 +120,8 @@ final class UnusedPublicClassConstRuleTest extends RuleTestCase
             'UNUSED',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedInternalClassPublicConstant.php',
-            ],
-            [
-                [$errorMessage, 12, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedInternalClassPublicConstant.php'],
+            [[$errorMessage, 12, RuleTips::SOLUTION_MESSAGE]],
         ];
     }
 

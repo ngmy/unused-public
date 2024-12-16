@@ -17,8 +17,9 @@ final class TestCaseUser extends TestCase
         UsedPublicInternalClassMethodInTestCaseOnly::useMeStatic();
     }
 
-    private function go2(UsedInternalClassPublicClassMethodInTestCaseOnly $usedInternalClassPublicClassMethodInTestCaseOnly)
-    {
+    private function go2(
+        UsedInternalClassPublicClassMethodInTestCaseOnly $usedInternalClassPublicClassMethodInTestCaseOnly
+    ) {
         $usedInternalClassPublicClassMethodInTestCaseOnly->useMe();
 
         UsedInternalClassPublicClassMethodInTestCaseOnly::useMeStatic();

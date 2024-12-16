@@ -65,11 +65,16 @@ final class PublicPropertyFetchCollector implements Collector
         $propertyName = $node->name->toString();
 
         $classReflection = $scope->getClassReflection();
-        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass($classReflection);
+        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass(
+            $classReflection
+        );
 
         $propertyReference = new PropertyReference($className, $propertyName, $isTest);
         $propertyReferences = [(string) $propertyReference];
-        $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences($className, $propertyName);
+        $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
+            $className,
+            $propertyName
+        );
 
         return [...$propertyReferences, ...$parentPropertyReferences];
     }

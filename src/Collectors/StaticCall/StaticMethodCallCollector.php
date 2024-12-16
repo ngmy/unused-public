@@ -50,7 +50,9 @@ final class StaticMethodCallCollector implements Collector
         }
 
         $classReflection = $scope->getClassReflection();
-        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass($classReflection);
+        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass(
+            $classReflection
+        );
 
         $classMethodCallReference = new MethodCallReference(
             $node->class->toString(),

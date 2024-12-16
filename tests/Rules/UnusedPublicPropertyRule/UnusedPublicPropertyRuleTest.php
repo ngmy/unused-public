@@ -148,12 +148,8 @@ final class UnusedPublicPropertyRuleTest extends RuleTestCase
             'property',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedPublicInternalProperty.php',
-            ],
-            [
-                [$errorMessage, 7, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedPublicInternalProperty.php'],
+            [[$errorMessage, 7, RuleTips::SOLUTION_MESSAGE]],
         ];
 
         yield [
@@ -170,12 +166,8 @@ final class UnusedPublicPropertyRuleTest extends RuleTestCase
             'property',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedInternalClassPublicProperty.php',
-            ],
-            [
-                [$errorMessage, 10, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedInternalClassPublicProperty.php'],
+            [[$errorMessage, 10, RuleTips::SOLUTION_MESSAGE]],
         ];
 
         yield [

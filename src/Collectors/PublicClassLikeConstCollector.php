@@ -57,7 +57,12 @@ final class PublicClassLikeConstCollector implements Collector
 
         $constantNames = [];
         foreach ($node->consts as $constConst) {
-            $constantNames[] = [$classReflection->getName(), $constConst->name->toString(), $node->getLine(), $isInternal];
+            $constantNames[] = [
+                $classReflection->getName(),
+                $constConst->name->toString(),
+                $node->getLine(),
+                $isInternal,
+            ];
         }
 
         return $constantNames;

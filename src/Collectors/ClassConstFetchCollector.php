@@ -65,7 +65,10 @@ final class ClassConstFetchCollector implements Collector
 
                     $constantReference = new ConstantReference($declaringClassName, $constantName, $isTest);
                     $constantReferences = [(string) $constantReference];
-                    $parentConstantReferences = $this->parentConstantReferenceResolver->findParentConstantReferences($declaringClassName, $constantName);
+                    $parentConstantReferences = $this->parentConstantReferenceResolver->findParentConstantReferences(
+                        $declaringClassName,
+                        $constantName
+                    );
 
                     return [...$constantReferences, ...$parentConstantReferences];
                 }
@@ -74,11 +77,16 @@ final class ClassConstFetchCollector implements Collector
             }
         }
 
-        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass($classReflection);
+        $isTest = $classReflection instanceof ClassReflection && $this->classTypeDetector->isTestClass(
+            $classReflection
+        );
 
         $constantReference = new ConstantReference($className, $constantName, $isTest);
         $constantReferences = [(string) $constantReference];
-        $parentConstantReferences = $this->parentConstantReferenceResolver->findParentConstantReferences($className, $constantName);
+        $parentConstantReferences = $this->parentConstantReferenceResolver->findParentConstantReferences(
+            $className,
+            $constantName
+        );
 
         return [...$constantReferences, ...$parentConstantReferences];
     }

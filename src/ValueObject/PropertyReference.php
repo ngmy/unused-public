@@ -9,6 +9,26 @@ use TomasVotruba\UnusedPublic\Enum\ReferenceMarker;
 
 final class PropertyReference implements Stringable
 {
+    public function __construct(
+        private readonly string $class,
+        private readonly string $property,
+        private readonly bool $isTest,
+    ) {
+    }
+
+    public function __toString(): string
+    {
+        $className = $this->getClass();
+        $propertyName = $this->getProperty();
+
+        $propertyReference = $className . '::' . $propertyName;
+        if ($this->isTest()) {
+            $propertyReference = ReferenceMarker::TEST . $propertyReference;
+        }
+
+        return $propertyReference;
+    }
+
     public static function fromString(string $propertyReference): self
     {
         $isTest = false;
@@ -20,13 +40,6 @@ final class PropertyReference implements Stringable
         [$class, $property] = explode('::', $propertyReference);
 
         return new self($class, $property, $isTest);
-    }
-
-    public function __construct(
-        private readonly string $class,
-        private readonly string $property,
-        private readonly bool $isTest,
-    ) {
     }
 
     public function getClass(): string
@@ -42,18 +55,5 @@ final class PropertyReference implements Stringable
     public function isTest(): bool
     {
         return $this->isTest;
-    }
-
-    public function __toString(): string
-    {
-        $className = $this->getClass();
-        $propertyName = $this->getProperty();
-
-        $propertyReference = $className . '::' . $propertyName;
-        if ($this->isTest()) {
-            $propertyReference = ReferenceMarker::TEST . $propertyReference;
-        }
-
-        return $propertyReference;
     }
 }

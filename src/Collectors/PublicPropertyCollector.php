@@ -86,8 +86,12 @@ final class PublicPropertyCollector implements Collector
         return $publicPropertyNames;
     }
 
-    private function isInternalRecursive(ClassReflection $classReflection, Class_ $class, string $propertyName, Scope $scope): bool
-    {
+    private function isInternalRecursive(
+        ClassReflection $classReflection,
+        Class_ $class,
+        string $propertyName,
+        Scope $scope
+    ): bool {
         if ($this->internalDocStmtAnalyzer->isInternalDoc($class, $classReflection)) {
             return true;
         }

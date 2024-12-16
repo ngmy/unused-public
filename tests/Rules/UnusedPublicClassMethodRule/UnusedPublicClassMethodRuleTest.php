@@ -195,12 +195,8 @@ final class UnusedPublicClassMethodRuleTest extends RuleTestCase
             'freeForAll',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedPublicInternalClassMethod.php',
-            ],
-            [
-                [$errorMessage, 12, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedPublicInternalClassMethod.php'],
+            [[$errorMessage, 12, RuleTips::SOLUTION_MESSAGE]],
         ];
 
         yield [
@@ -217,12 +213,8 @@ final class UnusedPublicClassMethodRuleTest extends RuleTestCase
             'freeForAll',
         );
         yield [
-            [
-                __DIR__ . '/Fixture/UnusedInternalClassPublicClassMethod.php',
-            ],
-            [
-                [$errorMessage, 12, RuleTips::SOLUTION_MESSAGE],
-            ],
+            [__DIR__ . '/Fixture/UnusedInternalClassPublicClassMethod.php'],
+            [[$errorMessage, 12, RuleTips::SOLUTION_MESSAGE]],
         ];
     }
 
