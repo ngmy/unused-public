@@ -72,7 +72,8 @@ final readonly class PublicStaticPropertyFetchCollector implements Collector
             }
 
             $propertyReflection = $classReflection->getProperty($propertyName, $scope);
-            $className = $propertyReflection->getDeclaringClass()->getName();
+            $className = $propertyReflection->getDeclaringClass()
+                ->getName();
             $propertyReferences = [$className . '::' . $propertyName];
             $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
                 $className,

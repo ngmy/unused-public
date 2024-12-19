@@ -70,7 +70,8 @@ final readonly class PublicPropertyFetchCollector implements Collector
             }
 
             $propertyReflection = $classReflection->getProperty($propertyName, $scope);
-            $className = $propertyReflection->getDeclaringClass()->getName(); 
+            $className = $propertyReflection->getDeclaringClass()
+                ->getName();
             $propertyReference = new PropertyReference($className, $propertyName, $isTest);
             $parentPropertyReferences = $this->parentPropertyReferenceResolver->findParentPropertyReferences(
                 $className,
